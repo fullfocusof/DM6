@@ -121,3 +121,73 @@ void CombiPlacementInterraction::genPlaces(vector<vector<int>>& result, int n, i
         } while (!is_sorted(comb.begin(), comb.end()));
     }
 }
+
+int CombiPlacementInterraction::factorial(int num)
+{
+    if (num <= 1)
+    {
+        return 1;
+    }
+
+    return num * factorial(num - 1);
+}
+
+int CombiPlacementInterraction::binomCoef(int n, int k)
+{
+    if (k == 0)
+    {
+        return 1;
+    }
+    if (k > n)
+    {
+        throw exception("Недопустимые аргументы");
+    }
+    int numerator = factorial(n);
+    int denominator = factorial(k) * factorial(n - k);
+
+    return numerator / denominator;
+}
+
+vector<int> CombiPlacementInterraction::genCombFromNum(int n, int k, int index)
+{
+    vector<int> comb;
+    int el = 0;
+
+    while (k > 0)
+    {
+        int curCoef = binomCoef(n - 1, k - 1);
+        if (index < curCoef)
+        {
+            comb.push_back(el);
+            k--;
+        }
+        else
+        {
+            index -= curCoef;
+        }
+        n--;
+        el++;
+    }
+
+    return comb;
+}
+
+int CombiPlacementInterraction::genNumFromComb(vector<int> comb, int n)
+{
+    int k = comb.size(), result = 0, prev = -1;
+    auto it = comb.begin();
+
+    for (int i = 0; i < k; i++)
+    {
+        int cur = *it;
+        it++;
+        for (int j = prev + 1; j < cur; j++)
+        {
+            result += binomCoef(n - j - 1, k - i - 1);
+        }
+
+        prev = cur;
+    }
+
+    return result;
+}

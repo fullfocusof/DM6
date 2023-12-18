@@ -43,8 +43,10 @@ int main()
 		vector<string> menu =
 		{
 			"Лексикографическая генерация сочетаний",
-			"	Генерация размещений",
-			"		Выход"
+			"Генерация размещений",
+			"Генерация сочетания по номеру",
+			"Нахождение номера сочетания",
+			"Выход"
 		};
 
 		for (int i = 0; i < menu.size(); i++)
@@ -181,11 +183,139 @@ int main()
 							}
 						}
 
+						cin.ignore();
+						cin.clear();
+
 						test.printQuit();
 					}
 					break;
 
 					case 2:
+					{
+						system("cls");
+
+						int n, k;
+						cout << "Введите количество элементов в множестве" << endl;
+						cin >> n;
+						cout << "Введите количество элементов в сочетании" << endl;
+						cin >> k;
+
+						while (k > n)
+						{
+							system("cls");
+							cout << "Неверные данные" << endl;
+							cout << "Введите количество элементов в множестве" << endl;
+							cin >> n;
+							cout << "Введите количество элементов в сочетании" << endl;
+							cin >> k;
+						}
+
+						system("cls");
+
+						int num;
+						cout << "Введите номер сочетания" << endl;
+						cin >> num;
+
+						while (num > test.binomCoef(n, k) - 1 || num < 0)
+						{
+							system("cls");
+							cout << "Неверные данные" << endl;
+							cout << "Введите номер сочетания" << endl;
+							cin >> num;
+						}
+
+						system("cls");
+
+						vector<int> comb = test.genCombFromNum(n, k, num);
+
+						cout << "Полученное сочетание" << endl;
+						for (auto& el : comb)
+						{
+							cout << el << " ";
+						}
+
+						cin.ignore();
+						cin.clear();
+
+						test.printQuit();
+					}
+					break;
+
+					case 3:
+					{
+						system("cls");
+
+						int num;
+						string input;
+						vector<int> tempVar;
+						cout << "Введите перестановку, номер которой хотите получить" << endl << "Введите числа через пробел и нажмите Enter" << endl;
+						getline(cin, input);
+
+						while (input.empty())
+						{
+							system("cls");
+							cout << "Вы ввели пустое множество" << endl;
+							cout << "Введите числа, после ввода последнего нажмите Enter" << endl;
+							getline(cin, input);
+							cin.clear();
+							cin.ignore(10000, '\n');
+						}
+
+						istringstream iss(input);
+						while (iss >> num)
+						{
+							tempVar.push_back(num);
+						}
+
+						system("cls");
+
+						int n, k = tempVar.size();					
+						cout << "Введите количество элементов в множестве" << endl;
+						cin >> n;
+
+						while (k > n)
+						{
+							system("cls");
+							cout << "Неверные данные" << endl;
+							cout << "Введите количество элементов в множестве" << endl;
+							cin >> n;
+						}
+
+						vector<vector<int>> checkComb;
+						test.genComb(checkComb, n, k);
+
+						vector<int> revTemp = tempVar;
+						reverse(revTemp.begin(), revTemp.end());
+
+						if (find(checkComb.begin(), checkComb.end(), revTemp) == checkComb.end())
+						{
+							system("cls");
+							cout << "Данное сочетание не принадлежит " << n << "-множеству" << endl;
+							system("pause");
+							system("cls");
+							cin.clear();
+							cin.ignore(10000, '\n');
+							break;
+						}
+
+						system("cls");
+
+						cout << "Сочетание: ";
+						for (auto& el : tempVar)
+						{
+							cout << el << " ";
+						}
+						cout << endl;
+						cout << "Номер сочетания - " << test.genNumFromComb(tempVar, n);
+
+						cin.clear();
+						cin.ignore(10000, '\n');
+
+						test.printQuit();
+					}
+					break;
+
+					case 4:
 					{
 						exitProg = true;
 					}

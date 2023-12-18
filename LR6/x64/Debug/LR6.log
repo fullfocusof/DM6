@@ -1,2 +1,3 @@
 ﻿  Main.cpp
+E:\Projects\DiscreteMath\LR6\LR6\Main.cpp(272,16): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   LR6.vcxproj -> E:\Projects\DiscreteMath\LR6\x64\Debug\LR6.exe
